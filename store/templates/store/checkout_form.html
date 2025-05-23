@@ -1,0 +1,714 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<style>
+/* Form styles */
+.form-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.form-section h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+}
+
+.cart-summary {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.cart-summary h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+.cart-summary ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.cart-summary li {
+  padding: 5px 0;
+  border-bottom: 1px dashed #ddd;
+}
+
+.cart-total {
+  font-size: 1.1em;
+  margin-top: 10px;
+}
+
+.form-check {
+  margin-bottom: 10px;
+}
+
+.form-check-label {
+  margin-left: 5px;
+}
+
+#bank-transfer-info {
+  background-color: #e9f7fe;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.submit-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+.submit-btn:hover {
+  background-color: #3a7bc8;
+}
+
+.submit-btn:disabled {
+  background-color: #7da7db;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.submit-btn .loading-spinner {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Alert styles */
+.alert {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-top: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.alert-warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  border-left: 3px solid #ffc107;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.2);
+  border-left: 3px solid #dc3545;
+  color: #721c24;
+}
+
+/* Loading styles */
+.loading-spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #4a90e2;
+  animation: spin 1s ease infinite;
+  margin-right: 5px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Validations styles */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 0.25rem;
+}
+
+/* Select Form */
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  appearance: none;
+}
+
+.form-select:focus {
+  border-color: #4a90e2;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.25);
+}
+
+.form-select-sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+/* Loading indicator cho dropdown */
+.dropdown-loading {
+  position: relative;
+}
+
+.dropdown-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  border-top-color: #4a90e2;
+  animation: spin 1s ease infinite;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dropdown-loading.active::after {
+  opacity: 1;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Form select active state */
+.form-select.active {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+/* Modal thông báo thành công */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0) scale(1);
+}
+
+.modal-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background-color: rgba(40, 167, 69, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-icon i {
+  font-size: 40px;
+  color: #28a745;
+}
+
+.modal-container h3 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.modal-container p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-btn {
+  padding: 12px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.primary-btn {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.primary-btn:hover {
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.secondary-btn:hover {
+  background-color: #e9ecef;
+}
+
+@media (min-width: 576px) {
+  .modal-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 18px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background-color: #f5f5f5;
+  color: #e74c3c;
+  transform: rotate(90deg);
+}
+</style>
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4">Thanh toán đơn hàng</h2>
+    <form method="post" action="{% url 'checkout' %}" id="checkout-form">
+      {% csrf_token %}
+
+      <div class="cart-summary">
+        <h4>Thông tin đơn hàng</h4>
+        <ul>
+          {% for item in cart_items %}
+            <li>{{ item.product.name }} - {{ item.quantity }} x {{ item.product.price|floatformat:0 }}đ</li>
+          {% endfor %}
+        </ul>
+        <p class="cart-total"><strong>Tổng tiền:</strong> {{ total_price|floatformat:0 }}đ</p>
+      </div>
+
+      <div class="form-section">
+        <h4>Thông tin người nhận</h4>
+        <div class="form-group">
+          <label for="id_full_name">Họ và tên:</label>
+          <input type="text" name="full_name" id="id_full_name" class="form-control" {% if form.full_name.value %}value="{{ form.full_name.value }}"{% endif %} required>
+        </div>
+        <div class="form-group">
+          <label for="id_phone">Số điện thoại:</label>
+          <input type="text" name="phone" id="id_phone" class="form-control" {% if form.phone.value %}value="{{ form.phone.value }}"{% endif %} required>
+        </div>
+        
+        <!-- Dropdown địa chỉ mới -->
+        <div class="form-group dropdown-loading" id="city-container">
+          <label for="city">Tỉnh/Thành phố:</label>
+          <select class="form-select form-select-sm mb-3" id="city" name="province" required>
+            <option value="" selected>Chọn tỉnh thành</option>           
+          </select>
+        </div>
+        
+        <div class="form-group dropdown-loading" id="district-container">
+          <label for="district">Quận/Huyện:</label>
+          <select class="form-select form-select-sm mb-3" id="district" name="district" required>
+            <option value="" selected>Chọn quận huyện</option>
+          </select>
+        </div>
+        
+        <div class="form-group dropdown-loading" id="ward-container">
+          <label for="ward">Phường/Xã:</label>
+          <select class="form-select form-select-sm" id="ward" name="ward" required>
+            <option value="" selected>Chọn phường xã</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="id_address">Địa chỉ chi tiết:</label>
+          <textarea name="address" id="id_address" class="form-control" required>{% if form.address.value %}{{ form.address.value }}{% endif %}</textarea>
+        </div>
+        
+        <!-- Thêm các trường ẩn cho text đầy đủ -->
+        <input type="hidden" id="province_text" name="province_text" value="">
+        <input type="hidden" id="district_text" name="district_text" value="">
+        <input type="hidden" id="ward_text" name="ward_text" value="">
+      </div>
+
+      <div class="form-section">
+        <h4>Phương thức thanh toán</h4>
+        <div class="form-group">
+          {% for radio in form.payment_method %}
+            <div class="form-check">
+              {{ radio.tag }}
+              <label class="form-check-label" for="{{ radio.id_for_label }}">
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <div id="bank-transfer-info" style="display: none;">
+          <h5>Thông tin chuyển khoản</h5>
+          <p><strong>Ngân hàng:</strong> Vietcombank</p>
+          <p><strong>Số tài khoản:</strong> 0123456789</p>
+          <p><strong>Chủ tài khoản:</strong> Nguyễn Văn A</p>
+          <p><strong>Nội dung:</strong> Thanh toán đơn hàng {{ order_code|default:"XYZ123" }}</p>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn mt-3">Xác nhận thanh toán</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  initPhoneValidation();
+  initPaymentMethodListeners();
+  initAddressDropdowns();
+});
+
+function initPhoneValidation() {
+  const phoneInput = document.getElementById("id_phone");
+  if (phoneInput) {
+    phoneInput.setAttribute("pattern", "\\d+");
+    phoneInput.setAttribute("inputmode", "numeric");
+  }
+}
+
+function initPaymentMethodListeners() {
+  const paymentInputs = document.querySelectorAll("input[name='payment_method']");
+  const bankTransferInfo = document.getElementById("bank-transfer-info");
+
+  paymentInputs.forEach((input) => {
+    input.addEventListener("change", function () {
+      if (this.value === "bank_transfer") {
+        bankTransferInfo.style.display = "block";
+      } else {
+        bankTransferInfo.style.display = "none";
+      }
+    });
+
+    // Show info on page load if already selected
+    if (input.checked && input.value === "bank_transfer") {
+      bankTransferInfo.style.display = "block";
+    }
+  });
+}
+
+// Xử lý dropdown tỉnh/thành, quận/huyện, phường/xã
+function initAddressDropdowns() {
+  var citis = document.getElementById("city");
+  var districts = document.getElementById("district");
+  var wards = document.getElementById("ward");
+  var provinceText = document.getElementById("province_text");
+  var districtText = document.getElementById("district_text");
+  var wardText = document.getElementById("ward_text");
+  var cityContainer = document.getElementById("city-container");
+  var districtContainer = document.getElementById("district-container");
+  var wardContainer = document.getElementById("ward-container");
+  
+  // Hiển thị hiệu ứng loading khi bắt đầu tải dữ liệu
+  cityContainer.classList.add("active");
+  
+  var Parameter = {
+    url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+    method: "GET", 
+  };
+  
+  axios(Parameter)
+    .then(function (result) {
+      renderCity(result.data);
+      // Ẩn hiệu ứng loading khi đã tải xong
+      cityContainer.classList.remove("active");
+    })
+    .catch(function(error) {
+      console.error("Lỗi khi tải dữ liệu địa chỉ:", error);
+      showErrorAlert("Không thể tải dữ liệu địa chỉ. Vui lòng làm mới trang.");
+      cityContainer.classList.remove("active");
+    });
+  
+  function renderCity(data) {
+    for (const x of data) {
+      citis.options[citis.options.length] = new Option(x.Name, x.Id);
+    }
+    
+    citis.onchange = function () {
+      // Hiển thị hiệu ứng loading
+      districtContainer.classList.add("active");
+      
+      districts.length = 1;
+      wards.length = 1;
+      provinceText.value = this.options[this.selectedIndex].text;
+      districtText.value = "";
+      wardText.value = "";
+      
+      // Thêm class active
+      this.classList.add("active");
+      districts.classList.remove("active");
+      wards.classList.remove("active");
+      
+      if(this.value != ""){
+        const result = data.filter(n => n.Id === this.value);
+  
+        for (const k of result[0].Districts) {
+          districts.options[districts.options.length] = new Option(k.Name, k.Id);
+        }
+      }
+      
+      // Ẩn hiệu ứng loading
+      setTimeout(() => {
+        districtContainer.classList.remove("active");
+      }, 300);
+    };
+    
+    districts.onchange = function () {
+      // Hiển thị hiệu ứng loading
+      wardContainer.classList.add("active");
+      
+      wards.length = 1;
+      districtText.value = this.options[this.selectedIndex].text;
+      wardText.value = "";
+      
+      // Thêm class active
+      this.classList.add("active");
+      wards.classList.remove("active");
+      
+      const dataCity = data.filter((n) => n.Id === citis.value);
+      if (this.value != "") {
+        const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+  
+        for (const w of dataWards) {
+          wards.options[wards.options.length] = new Option(w.Name, w.Id);
+        }
+      }
+      
+      // Ẩn hiệu ứng loading
+      setTimeout(() => {
+        wardContainer.classList.remove("active");
+      }, 300);
+    };
+    
+    wards.onchange = function() {
+      wardText.value = this.options[this.selectedIndex].text;
+      // Thêm class active
+      this.classList.add("active");
+    }
+    
+    // Nếu đã có giá trị trước đó, chọn lại
+    const checkExistingSelections = function() {
+      if (citis.getAttribute('data-selected')) {
+        const selectedCity = citis.getAttribute('data-selected');
+        for (let i = 0; i < citis.options.length; i++) {
+          if (citis.options[i].value === selectedCity) {
+            citis.selectedIndex = i;
+            citis.dispatchEvent(new Event('change'));
+            break;
+          }
+        }
+      }
+      
+      if (districts.getAttribute('data-selected')) {
+        const selectedDistrict = districts.getAttribute('data-selected');
+        setTimeout(() => {
+          for (let i = 0; i < districts.options.length; i++) {
+            if (districts.options[i].value === selectedDistrict) {
+              districts.selectedIndex = i;
+              districts.dispatchEvent(new Event('change'));
+              break;
+            }
+          }
+        }, 300);
+      }
+      
+      if (wards.getAttribute('data-selected')) {
+        const selectedWard = wards.getAttribute('data-selected');
+        setTimeout(() => {
+          for (let i = 0; i < wards.options.length; i++) {
+            if (wards.options[i].value === selectedWard) {
+              wards.selectedIndex = i;
+              wards.dispatchEvent(new Event('change'));
+              break;
+            }
+          }
+        }, 600);
+      }
+    };
+    
+    // Thực hiện sau khi tải dữ liệu
+    setTimeout(checkExistingSelections, 500);
+  }
+}
+
+function showErrorAlert(message) {
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-danger';
+  alert.innerHTML = message;
+  document.querySelector('.form-section').prepend(alert);
+  
+  setTimeout(() => {
+    alert.remove();
+  }, 5000);
+}
+
+// Kiểm tra form trước khi submit
+document.getElementById("checkout-form").addEventListener("submit", function(e) {
+  const city = document.getElementById("city");
+  const district = document.getElementById("district");
+  const ward = document.getElementById("ward");
+  
+  if (city.value === "" || district.value === "" || ward.value === "") {
+    e.preventDefault();
+    showErrorAlert("Vui lòng chọn đầy đủ thông tin địa chỉ (Tỉnh/Thành phố, Quận/Huyện, Phường/Xã)");
+  } else {
+    // Nếu form hợp lệ, hiển thị modal thành công và ngăn chặn submit form thông thường
+    e.preventDefault();
+    // Giả lập gửi form
+    simulateFormSubmission();
+  }
+});
+
+// Hàm giả lập gửi form và hiển thị thông báo thành công
+function simulateFormSubmission() {
+  const form = document.getElementById("checkout-form");
+  const submitBtn = form.querySelector(".submit-btn");
+  
+  // Thay đổi trạng thái nút submit
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="loading-spinner"></span> Đang xử lý...';
+  
+  // Giả lập thời gian xử lý
+  setTimeout(function() {
+    // Hiển thị modal thành công
+    const successModal = document.getElementById("success-modal");
+    successModal.classList.add("active");
+    
+    // Thêm sự kiện đóng modal khi click bên ngoài
+    successModal.addEventListener("click", function(event) {
+      if (event.target === successModal) {
+        successModal.classList.remove("active");
+      }
+    });
+    
+    // Đóng modal khi nhấn phím Escape
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape" && successModal.classList.contains("active")) {
+        successModal.classList.remove("active");
+      }
+    });
+    
+    // Đóng modal khi click vào nút đóng
+    document.getElementById("close-modal").addEventListener("click", function() {
+      successModal.classList.remove("active");
+    });
+  }, 1500);
+}
+</script>
+
+<!-- Modal thông báo thành công -->
+<div id="success-modal" class="modal-overlay">
+  <div class="modal-container">
+    <button class="modal-close" id="close-modal">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="modal-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h3>Đặt hàng thành công!</h3>
+    <p>Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử lý.</p>
+    <div class="modal-actions">
+      <a href="{% url 'order_history' %}" class="modal-btn primary-btn">Xem đơn hàng</a>
+      <a href="{% url 'product_list' %}" class="modal-btn secondary-btn">Tiếp tục mua sắm</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+.color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+.product-image-preview {
+    max-height: 150px;
+    width: auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Thêm hình ảnh cho từng màu - {{ product.name }}</h3>
+        </div>
+        <div class="card-body">
+            {% if messages %}
+            <div class="row">
+                <div class="col-12">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if colors_without_images %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Vui lòng thêm hình ảnh cho {{ colors_without_images.count }} màu còn lại.
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="color" class="form-label">Chọn màu sắc</label>
+                        <select name="color" id="color" class="form-select" required>
+                            <option value="">-- Chọn màu --</option>
+                            {% for color in colors_without_images %}
+                            <option value="{{ color.id }}">{{ color.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="image" class="form-label">Hình ảnh sản phẩm</label>
+                        <input type="file" name="image" id="image" class="form-control" required accept="image/*">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Thêm hình ảnh
+                    </button>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-eye me-2"></i> Xem sản phẩm
+                    </a>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i> Đã thêm hình ảnh cho tất cả các màu!
+            </div>
+            <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">
+                <i class="fas fa-eye me-2"></i> Xem sản phẩm
+            </a>
+            {% endif %}
+
+            {% if colors_with_images %}
+            <h4 class="mt-4 mb-3">Các màu đã có hình ảnh</h4>
+            <div class="row">
+                {% for color in colors_with_images %}
+                {% for color_image in product.color_images.all %}
+                {% if color_image.color == color %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <span class="color-box" data-color-code="{{ color.code }}" id="color-box-{{ color.id }}"></span>
+                            <span>{{ color.name }}</span>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="{{ color_image.image.url }}" alt="{{ color.name }}" class="img-fluid product-image-preview">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Áp dụng màu sắc cho các ô màu
+        const colorBoxes = document.querySelectorAll('.color-box');
+        colorBoxes.forEach(box => {
+            const colorCode = box.getAttribute('data-color-code');
+            if (colorCode) {
+                box.style.backgroundColor = colorCode;
+            }
+        });
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,506 @@
+[
+  {
+    "model": "store.province",
+    "pk": 1,
+    "fields": {
+      "name": "Hà Nội",
+      "code": "hanoi"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 2,
+    "fields": {
+      "name": "Hồ Chí Minh",
+      "code": "hochiminh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 3,
+    "fields": {
+      "name": "Đà Nẵng",
+      "code": "danang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 4,
+    "fields": {
+      "name": "Hải Phòng",
+      "code": "haiphong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 5,
+    "fields": {
+      "name": "Cần Thơ",
+      "code": "cantho"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 6,
+    "fields": {
+      "name": "An Giang",
+      "code": "angiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 7,
+    "fields": {
+      "name": "Bà Rịa - Vũng Tàu",
+      "code": "bariavungtau"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 8,
+    "fields": {
+      "name": "Bắc Giang",
+      "code": "bacgiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 9,
+    "fields": {
+      "name": "Bắc Kạn",
+      "code": "backan"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 10,
+    "fields": {
+      "name": "Bạc Liêu",
+      "code": "baclieu"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 11,
+    "fields": {
+      "name": "Bắc Ninh",
+      "code": "bacninh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 12,
+    "fields": {
+      "name": "Bến Tre",
+      "code": "bentre"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 13,
+    "fields": {
+      "name": "Bình Định",
+      "code": "binhdinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 14,
+    "fields": {
+      "name": "Bình Dương",
+      "code": "binhduong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 15,
+    "fields": {
+      "name": "Bình Phước",
+      "code": "binhphuoc"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 16,
+    "fields": {
+      "name": "Bình Thuận",
+      "code": "binhthuan"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 17,
+    "fields": {
+      "name": "Cà Mau",
+      "code": "camau"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 18,
+    "fields": {
+      "name": "Cao Bằng",
+      "code": "caobang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 19,
+    "fields": {
+      "name": "Đắk Lắk",
+      "code": "daklak"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 20,
+    "fields": {
+      "name": "Đắk Nông",
+      "code": "daknong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 21,
+    "fields": {
+      "name": "Điện Biên",
+      "code": "dienbien"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 22,
+    "fields": {
+      "name": "Đồng Nai",
+      "code": "dongnai"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 23,
+    "fields": {
+      "name": "Đồng Tháp",
+      "code": "dongthap"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 24,
+    "fields": {
+      "name": "Gia Lai",
+      "code": "gialai"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 25,
+    "fields": {
+      "name": "Hà Giang",
+      "code": "hagiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 26,
+    "fields": {
+      "name": "Hà Nam",
+      "code": "hanam"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 27,
+    "fields": {
+      "name": "Hà Tĩnh",
+      "code": "hatinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 28,
+    "fields": {
+      "name": "Hải Dương",
+      "code": "haiduong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 29,
+    "fields": {
+      "name": "Hậu Giang",
+      "code": "haugiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 30,
+    "fields": {
+      "name": "Hòa Bình",
+      "code": "hoabinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 31,
+    "fields": {
+      "name": "Hưng Yên",
+      "code": "hungyen"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 32,
+    "fields": {
+      "name": "Khánh Hòa",
+      "code": "khanhhoa"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 33,
+    "fields": {
+      "name": "Kiên Giang",
+      "code": "kiengiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 34,
+    "fields": {
+      "name": "Kon Tum",
+      "code": "kontum"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 35,
+    "fields": {
+      "name": "Lai Châu",
+      "code": "laichau"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 36,
+    "fields": {
+      "name": "Lâm Đồng",
+      "code": "lamdong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 37,
+    "fields": {
+      "name": "Lạng Sơn",
+      "code": "langson"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 38,
+    "fields": {
+      "name": "Lào Cai",
+      "code": "laocai"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 39,
+    "fields": {
+      "name": "Long An",
+      "code": "longan"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 40,
+    "fields": {
+      "name": "Nam Định",
+      "code": "namdinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 41,
+    "fields": {
+      "name": "Nghệ An",
+      "code": "nghean"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 42,
+    "fields": {
+      "name": "Ninh Bình",
+      "code": "ninhbinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 43,
+    "fields": {
+      "name": "Ninh Thuận",
+      "code": "ninhthuan"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 44,
+    "fields": {
+      "name": "Phú Thọ",
+      "code": "phutho"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 45,
+    "fields": {
+      "name": "Phú Yên",
+      "code": "phuyen"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 46,
+    "fields": {
+      "name": "Quảng Bình",
+      "code": "quangbinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 47,
+    "fields": {
+      "name": "Quảng Nam",
+      "code": "quangnam"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 48,
+    "fields": {
+      "name": "Quảng Ngãi",
+      "code": "quangngai"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 49,
+    "fields": {
+      "name": "Quảng Ninh",
+      "code": "quangninh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 50,
+    "fields": {
+      "name": "Quảng Trị",
+      "code": "quangtri"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 51,
+    "fields": {
+      "name": "Sóc Trăng",
+      "code": "soctrang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 52,
+    "fields": {
+      "name": "Sơn La",
+      "code": "sonla"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 53,
+    "fields": {
+      "name": "Tây Ninh",
+      "code": "tayninh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 54,
+    "fields": {
+      "name": "Thái Bình",
+      "code": "thaibinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 55,
+    "fields": {
+      "name": "Thái Nguyên",
+      "code": "thainguyen"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 56,
+    "fields": {
+      "name": "Thanh Hóa",
+      "code": "thanhhoa"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 57,
+    "fields": {
+      "name": "Thừa Thiên Huế",
+      "code": "thuathienhue"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 58,
+    "fields": {
+      "name": "Tiền Giang",
+      "code": "tiengiang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 59,
+    "fields": {
+      "name": "Trà Vinh",
+      "code": "travinh"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 60,
+    "fields": {
+      "name": "Tuyên Quang",
+      "code": "tuyenquang"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 61,
+    "fields": {
+      "name": "Vĩnh Long",
+      "code": "vinhlong"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 62,
+    "fields": {
+      "name": "Vĩnh Phúc",
+      "code": "vinhphuc"
+    }
+  },
+  {
+    "model": "store.province",
+    "pk": 63,
+    "fields": {
+      "name": "Yên Bái",
+      "code": "yenbai"
+    }
+  }
+] 

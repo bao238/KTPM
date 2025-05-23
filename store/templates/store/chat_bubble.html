@@ -1,0 +1,727 @@
+{% load static %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="chat-widget">
+    <!-- Chat Bubble -->
+    <div class="chat-bubble" id="chatBubble">
+        <div class="chat-bubble-content">
+            <i class="bi bi-chat-dots-fill chat-icon"></i>
+            <span class="notification-badge" id="notificationBadge">1</span>
+        </div>
+    </div>
+
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatBox">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="chat-title">
+                <img src="{% static 'images/shop-logo.png' %}" alt="Shop Logo" class="chat-logo">
+                <div class="chat-info">
+                    <h5>An Hoang Shop</h5>
+                    <div class="online-status">
+                        <span class="online-dot"></span>
+                        <span class="status-text">Đang hoạt động</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-actions">
+                <button class="action-btn minimize-chat" id="minimizeChat" title="Thu nhỏ">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+                <button class="action-btn close-chat" id="closeChat" title="Đóng">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Body -->
+        <div class="chat-body" id="chatBody">
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <div class="welcome-icon">
+                    <i class="bi bi-chat-heart"></i>
+                </div>
+                <h4>Xin chào!</h4>
+                <p>Chúng tôi có thể giúp gì cho bạn?</p>
+            </div>
+
+            <!-- Quick Replies -->
+            <div class="quick-replies">
+                <button class="quick-reply-btn" onclick="sendQuickReply('Tôi muốn hỏi về sản phẩm')">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Hỏi về sản phẩm</span>
+                </button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('Tôi cần hỗ trợ đơn hàng')">
+                    <i class="bi bi-truck"></i>
+                    <span>Hỗ trợ đơn hàng</span>
+                </button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('Tôi muốn biết thêm về cửa hàng')">
+                    <i class="bi bi-shop"></i>
+                    <span>Về cửa hàng</span>
+                </button>
+            </div>
+
+            <!-- Messages Container -->
+            <div class="messages" id="messages"></div>
+        </div>
+
+        <!-- Chat Footer -->
+        <div class="chat-footer">
+            <div class="input-group">
+                <button class="emoji-btn" id="emojiBtn" title="Thêm emoji">
+                    <i class="bi bi-emoji-smile"></i>
+                </button>
+                <textarea 
+                    class="form-control message-input" 
+                    id="messageInput" 
+                    placeholder="Nhập tin nhắn..."
+                    rows="1"
+                ></textarea>
+                <button class="send-btn" id="sendMessage" title="Gửi tin nhắn">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Chat Widget Container */
+.chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Chat Bubble */
+.chat-bubble {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chat-bubble:hover {
+    transform: translateY(-5px);
+}
+
+.chat-bubble-content {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.chat-bubble-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    z-index: -1;
+    transition: transform 0.6s ease-out;
+}
+
+.chat-bubble:hover .chat-bubble-content::before {
+    transform: rotate(45deg) translateY(-10%);
+}
+
+.chat-icon {
+    color: white;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    animation: pulse-light 2s infinite;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes pulse-light {
+    0% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes bounce {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+/* Add a ripple effect for the chat bubble */
+.chat-bubble::after {
+    content: '';
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.3);
+    z-index: 1;
+    top: 0;
+    left: 0;
+    animation: ripple 1.5s infinite ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(1.7);
+        opacity: 0;
+    }
+}
+
+/* Chat Box */
+.chat-box {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.chat-box.active {
+    display: flex;
+    animation: slideIn 0.3s ease;
+}
+
+/* Chat Header */
+.chat-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-info h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.online-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.status-text {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 4px;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+/* Chat Body */
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f8fafc;
+    scroll-behavior: smooth;
+}
+
+.welcome-message {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.welcome-icon {
+    font-size: 40px;
+    color: #3b82f6;
+    margin-bottom: 15px;
+    background-color: rgba(59, 130, 246, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.welcome-message h4 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.welcome-message p {
+    color: #64748b;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.quick-reply-btn {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #475569;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.quick-reply-btn:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.quick-reply-btn i {
+    color: #3b82f6;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 5px;
+}
+
+.message {
+    display: flex;
+    max-width: 85%;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.bot {
+    align-self: flex-start;
+}
+
+.message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    line-height: 1.4;
+}
+
+.user .message-content {
+    background-color: #3b82f6;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.bot .message-content {
+    background-color: white;
+    color: #1e293b;
+    border-bottom-left-radius: 4px;
+}
+
+.message-time {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* Chat Footer */
+.chat-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e2e8f0;
+    background-color: white;
+    border-radius: 0 0 20px 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f1f5f9;
+    border-radius: 24px;
+    padding: 6px 8px 6px 16px;
+    transition: all 0.2s ease;
+}
+
+.input-group:focus-within {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.emoji-btn, .send-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.emoji-btn {
+    color: #94a3b8;
+}
+
+.emoji-btn:hover {
+    color: #64748b;
+    background-color: rgba(100, 116, 139, 0.1);
+}
+
+.send-btn {
+    color: white;
+    background-color: #3b82f6;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+}
+
+.send-btn:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+
+.message-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 4px;
+    resize: none;
+    font-size: 14px;
+    max-height: 100px;
+    outline: none;
+}
+
+.typing-indicator {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0;
+    margin-top: 6px;
+}
+
+.typing-indicator.active {
+    display: flex;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #94a3b8;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: pulse 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .chat-box {
+        width: calc(100vw - 60px);
+        height: 80vh;
+        right: -15px;
+        max-height: 600px;
+    }
+}
+</style>
+
+<script>
+// Chat Bubble Variables
+const chatBubble = document.getElementById('chatBubble');
+const chatBox = document.getElementById('chatBox');
+const minimizeChat = document.getElementById('minimizeChat');
+const closeChat = document.getElementById('closeChat');
+const notificationBadge = document.getElementById('notificationBadge');
+const messagesContainer = document.getElementById('messages');
+const messageInput = document.getElementById('messageInput');
+const sendMessage = document.getElementById('sendMessage');
+const typingIndicator = document.getElementById('typingIndicator');
+
+// Initialize chat state
+let isChatOpen = false;
+let messageCount = 1; // Khởi tạo biến đếm tin nhắn
+
+// Hiển thị số tin nhắn
+function updateMessageCount() {
+    notificationBadge.textContent = messageCount;
+    notificationBadge.style.display = messageCount > 0 ? 'flex' : 'none';
+}
+
+// Open/close chat function
+function toggleChat() {
+    if (isChatOpen) {
+        chatBox.classList.remove('active');
+    } else {
+        chatBox.classList.add('active');
+        messageCount = 0; // Đặt lại số tin nhắn khi mở chat
+        updateMessageCount();
+    }
+    isChatOpen = !isChatOpen;
+}
+
+// Add event listeners
+chatBubble.addEventListener('click', toggleChat);
+minimizeChat.addEventListener('click', toggleChat);
+closeChat.addEventListener('click', toggleChat);
+
+// Function to add message to chat
+function addMessage(content, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(isUser ? 'user' : 'bot');
+    
+    const now = new Date();
+    const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    
+    messageDiv.innerHTML = `
+        <div class="message-content">${content}</div>
+        <div class="message-time">${timeString}</div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    // Nếu là tin nhắn từ bot và chat đang đóng, tăng số lượng tin nhắn chưa đọc
+    if (!isUser && !isChatOpen) {
+        messageCount++;
+        updateMessageCount();
+    }
+}
+
+// Send message function
+function sendUserMessage() {
+    const message = messageInput.value.trim();
+    if (message) {
+        addMessage(message, true);
+        messageInput.value = '';
+        
+        // Show typing indicator
+        typingIndicator.classList.add('active');
+        
+        // Simulate bot reply after 1.5 seconds
+        setTimeout(() => {
+            typingIndicator.classList.remove('active');
+            
+            // Sample bot responses
+            const botResponses = [
+                'Cảm ơn bạn đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.',
+                'Xin chào! Tôi có thể giúp gì cho bạn?',
+                'Vui lòng để lại số điện thoại, chúng tôi sẽ liên hệ lại với bạn.',
+                'Bạn có thể xem thêm thông tin tại trang sản phẩm của chúng tôi.',
+                'Hiện tại chúng tôi đang có ưu đãi giảm giá 20% cho tất cả sản phẩm mới!'
+            ];
+            
+            const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+            addMessage(randomResponse, false);
+        }, 1500);
+    }
+}
+
+// Send message when clicking send button
+sendMessage.addEventListener('click', sendUserMessage);
+
+// Send message when pressing Enter key (without Shift)
+messageInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendUserMessage();
+    }
+});
+
+// Function to handle quick replies
+function sendQuickReply(message) {
+    addMessage(message, true);
+    
+    // Show typing indicator
+    typingIndicator.classList.add('active');
+    
+    // Simulate bot replies for specific quick replies
+    setTimeout(() => {
+        typingIndicator.classList.remove('active');
+        
+        if (message.includes('sản phẩm')) {
+            addMessage('Chúng tôi có rất nhiều sản phẩm đa dạng. Bạn đang quan tâm đến dòng sản phẩm nào?', false);
+        } else if (message.includes('đơn hàng')) {
+            addMessage('Để được hỗ trợ về đơn hàng, vui lòng cung cấp mã đơn hàng của bạn hoặc số điện thoại đặt hàng.', false);
+        } else if (message.includes('cửa hàng')) {
+            addMessage('An Hoàng Shop là cửa hàng chuyên cung cấp các sản phẩm công nghệ chính hãng với giá tốt nhất thị trường. Chúng tôi cam kết mang đến cho khách hàng trải nghiệm mua sắm tuyệt vời!', false);
+        }
+    }, 1000);
+}
+
+// Thêm một tin nhắn chào mừng tự động sau một khoảng thời gian
+function sendNewMessageNotification() {
+    if (!isChatOpen) {
+        messageCount++;
+        updateMessageCount();
+    }
+}
+
+// Hiển thị tin nhắn chào mừng đầu tiên
+setTimeout(() => {
+    if (!isChatOpen) {
+        messageCount = 1;
+        updateMessageCount();
+    }
+}, 3000);
+
+// Cập nhật số tin nhắn khi trang được tải
+updateMessageCount();
+</script>

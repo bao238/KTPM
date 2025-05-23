@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .order-history {
+        max-width: 1000px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .order-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .order-card {
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .order-header {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+    }
+    .order-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .order-id {
+        font-weight: bold;
+        color: #007bff;
+    }
+    .order-date {
+        color: #666;
+    }
+    .order-status {
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .status-processing {
+        background: #cce5ff;
+        color: #004085;
+    }
+    .status-shipped {
+        background: #d4edda;
+        color: #155724;
+    }
+    .status-delivered {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+    .status-cancelled {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    .order-body {
+        padding: 20px;
+    }
+    .order-items {
+        margin-bottom: 20px;
+    }
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .order-item:last-child {
+        border-bottom: none;
+    }
+    .item-name {
+        font-weight: 500;
+    }
+    .item-quantity {
+        color: #666;
+    }
+    .order-total {
+        text-align: right;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    .shipping-info {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    .shipping-info h4 {
+        margin-bottom: 10px;
+    }
+    .shipping-details {
+        color: #666;
+    }
+    .empty-orders {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+</style>
+
+<div class="order-history">
+    <h2 class="order-title">📦 Lịch sử đơn hàng</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <div class="order-info">
+                        <div>
+                            <span class="order-id">Đơn hàng #{{ order.id }}</span>
+                            <span class="order-date"> - {{ order.created_at|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div>
+                            <span class="order-status status-{{ order.status }}">
+                                {{ order.get_status_display }}
+                            </span>
+                            <a href="{% url 'order_detail' order.id %}" class="btn btn-primary btn-sm ms-2">
+                                <i class="fas fa-search"></i> Xem chi tiết
+                            </a>
+                            {% if order.status == 'pending' %}
+                            <a href="{% url 'update_order_address' order.id %}" class="btn btn-info btn-sm ms-2">
+                                <i class="fas fa-edit"></i> Cập nhật địa chỉ
+                            </a>
+                            <a href="{% url 'cancel_order' order.id %}" class="btn btn-warning btn-sm ms-2" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                <i class="fas fa-times"></i> Hủy đơn hàng
+                            </a>
+                            {% endif %}
+                            {% if user.is_staff %}
+                            <a href="{% url 'delete_order' order.id %}" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="order-body">
+                    <div class="order-items">
+                        {% for item in order.items.all %}
+                            <div class="order-item">
+                                <div class="item-name">
+                                    {{ item.product.name }}
+                                    <span class="item-quantity">x{{ item.quantity }}</span>
+                                </div>
+                                <div class="item-price">{{ item.subtotal|floatformat:0 }} VNĐ</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="order-total">
+                        Tổng cộng: {{ order.total|floatformat:0 }} VNĐ
+                    </div>
+                    <div class="shipping-info">
+                        <h4>Thông tin giao hàng</h4>
+                        <div class="shipping-details">
+                            <p><strong>Người nhận:</strong> {{ order.full_name }}</p>
+                            <p><strong>Điện thoại:</strong> {{ order.phone }}</p>
+                            <p><strong>Địa chỉ:</strong> {{ order.address }}, {{ order.ward }}, {{ order.district }}, {{ order.city }}</p>
+                            <p><strong>Phương thức thanh toán:</strong> 
+                                {% if order.payment_method == 'cod' %}
+                                    Thanh toán khi nhận hàng (COD)
+                                {% elif order.payment_method == 'bank_transfer' %}
+                                    Chuyển khoản ngân hàng
+                                {% elif order.payment_method == 'momo' %}
+                                    Ví điện tử MoMo
+                                {% elif order.payment_method == 'zalopay' %}
+                                    ZaloPay
+                                {% elif order.payment_method == 'vnpay' %}
+                                    VNPAY
+                                {% else %}
+                                    {{ order.get_payment_method_display }}
+                                {% endif %}
+                            </p>
+                            {% if order.note %}
+                                <p><strong>Ghi chú:</strong> {{ order.note }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-orders">
+            <p>Bạn chưa có đơn hàng nào.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,521 @@
+{% extends 'base.html' %}
+
+{% block title %}Thông Tin Cá Nhân | {{ request.user.username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .profile-header {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .profile-name {
+        font-weight: bold;
+        font-size: 2rem;
+        margin: 15px 0 5px;
+    }
+    
+    .profile-username {
+        color: #6c757d;
+        margin-bottom: 15px;
+    }
+    
+    .profile-bio {
+        font-style: italic;
+        margin-bottom: 20px;
+    }
+    
+    .profile-stats {
+        margin-top: 20px;
+    }
+    
+    .profile-stat {
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .profile-stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #4a90e2;
+    }
+    
+    .profile-stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    /* CSS cải tiến cho nav-tabs */
+    .nav-tabs {
+        margin-bottom: 20px;
+        border-bottom: 3px solid #e9ecef;
+        gap: 15px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .nav-tabs .nav-item {
+        margin-bottom: -3px;
+        width: 250px; /* Độ rộng cố định cho tab */
+    }
+    
+    .nav-tabs .nav-link {
+        border: none;
+        border-radius: 12px 12px 0 0;
+        padding: 15px 25px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        background-color: #f0f2f5;
+        border-bottom: 3px solid transparent;
+        text-align: center;
+        box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
+    }
+    
+    .nav-tabs .nav-link:hover {
+        color: #4a90e2;
+        background-color: #e9ecef;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-tabs .nav-link.active {
+        position: relative;
+        color: white;
+        background-color: #4a90e2;
+        border-bottom: 3px solid #2c6cb9;
+        transform: translateY(-5px);
+        box-shadow: 0 -5px 15px rgba(74, 144, 226, 0.3);
+    }
+    
+    .nav-tabs .nav-link i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-tabs .nav-link:hover i {
+        transform: scale(1.3);
+    }
+    
+    .nav-tabs .nav-link.active i {
+        transform: scale(1.4);
+        color: white;
+    }
+    
+    .nav-tabs .nav-link span {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-tabs .nav-link.active span {
+        font-weight: 800;
+    }
+    
+    /* Thêm hiệu ứng đổ bóng khi hover và active */
+    .nav-tabs .nav-link:hover {
+        color: #4a90e2;
+        background-color: #e9ecef;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Hiệu ứng nhấp nháy khi click */
+    .nav-tabs .nav-link:active {
+        transform: translateY(-2px);
+    }
+    
+    /* Thêm viền nổi bật cho tab active */
+    .nav-tabs .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid white;
+    }
+    
+    .form-label {
+        font-weight: 500;
+    }
+    
+    .social-link {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        color: #4a90e2;
+        font-size: 1.2rem;
+    }
+    
+    .tab-content {
+        transition: all 0.3s ease;
+        margin-top: 30px;
+    }
+    
+    .tab-pane {
+        animation: fadeIn 0.5s ease forwards;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .tab-pane .card {
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .tab-pane .card-body {
+        padding: 25px;
+    }
+    
+    /* Thêm tiêu đề cho mỗi tab */
+    .tab-title {
+        position: relative;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        font-weight: 700;
+        color: #4a90e2;
+        font-size: 1.3rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .tab-title::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 80px;
+        height: 2px;
+        background-color: #4a90e2;
+    }
+    
+    .tab-pane .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+    
+    .tab-pane .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .tab-pane .form-control:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.25);
+    }
+    
+    .tab-pane .btn-primary {
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .tab-pane .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header text-center">
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="{{ user.username }}" class="profile-avatar">
+        {% else %}
+            <img src="https://via.placeholder.com/150" alt="{{ user.username }}" class="profile-avatar">
+        {% endif %}
+        
+        <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+        <p class="profile-username">@{{ user.username }}</p>
+        
+        {% if profile.bio %}
+            <p class="profile-bio">{{ profile.bio }}</p>
+        {% endif %}
+        
+        <div class="row profile-stats">
+            <div class="col-4 profile-stat">
+                <div class="profile-stat-value">0</div>
+                <div class="profile-stat-label">Đơn hàng</div>
+            </div>
+            <div class="col-4 profile-stat">
+                <div class="profile-stat-value">0</div>
+                <div class="profile-stat-label">Đánh giá</div>
+            </div>
+            <div class="col-4 profile-stat">
+                <div class="profile-stat-value">{{ user.date_joined|date:"d/m/Y" }}</div>
+                <div class="profile-stat-label">Ngày tham gia</div>
+            </div>
+        </div>
+    </div>
+    
+    <ul class="nav nav-tabs" id="profileTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
+                <i class="fas fa-user me-2"></i><span>Thông tin cá nhân</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social" type="button" role="tab" aria-controls="social" aria-selected="false">
+                <i class="fas fa-share-alt me-2"></i><span>Liên kết mạng xã hội</span>
+            </button>
+        </li>
+    </ul>
+    
+    <div class="tab-content" id="profileTabContent">
+        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="tab-title"><i class="fas fa-user-edit me-2"></i>Chỉnh sửa thông tin cá nhân</h4>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="id_first_name" class="form-label">Họ</label>
+                                <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-control" id="id_first_name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_last_name" class="form-label">Tên</label>
+                                <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-control" id="id_last_name">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="id_email" class="form-label">Email</label>
+                                <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" id="id_email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_phone_number" class="form-label">Số điện thoại</label>
+                                <input type="text" name="phone_number" value="{{ form.phone_number.value|default:'' }}" class="form-control" id="id_phone_number">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_address" class="form-label">Địa chỉ</label>
+                            <input type="text" name="address" value="{{ form.address.value|default:'' }}" class="form-control" id="id_address">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="id_birthdate" class="form-label">Ngày sinh</label>
+                                <input type="date" name="birthdate" value="{{ form.birthdate.value|date:'Y-m-d'|default:'' }}" class="form-control" id="id_birthdate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_avatar" class="form-label">Ảnh đại diện</label>
+                                <input type="file" name="avatar" class="form-control" id="id_avatar">
+                                {% if profile.avatar %}
+                                    <small class="text-muted">Ảnh hiện tại: {{ profile.avatar.url }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_bio" class="form-label">Giới thiệu bản thân</label>
+                            <textarea name="bio" class="form-control" id="id_bio" rows="3">{{ form.bio.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <!-- <div class="mb-3">
+                            <label for="id_website" class="form-label">Website</label>
+                            <input type="url" name="website" value="{{ form.website.value|default:'' }}" class="form-control" id="id_website">
+                        </div> -->
+                        
+                        <input type="hidden" name="facebook" value="{{ form.facebook.value|default:'' }}">
+                        <input type="hidden" name="twitter" value="{{ form.twitter.value|default:'' }}">
+                        <input type="hidden" name="instagram" value="{{ form.instagram.value|default:'' }}">
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="fas fa-save me-2"></i>Lưu thông tin
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="tab-title"><i class="fas fa-share-alt me-2"></i>Liên kết tài khoản mạng xã hội</h4>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <input type="hidden" name="first_name" value="{{ form.first_name.value|default:'' }}">
+                        <input type="hidden" name="last_name" value="{{ form.last_name.value|default:'' }}">
+                        <input type="hidden" name="email" value="{{ form.email.value|default:'' }}">
+                        <input type="hidden" name="phone_number" value="{{ form.phone_number.value|default:'' }}">
+                        <input type="hidden" name="address" value="{{ form.address.value|default:'' }}">
+                        <input type="hidden" name="birthdate" value="{{ form.birthdate.value|date:'Y-m-d'|default:'' }}">
+                        <input type="hidden" name="bio" value="{{ form.bio.value|default:'' }}">
+                        <input type="hidden" name="website" value="{{ form.website.value|default:'' }}">
+                        
+                        <div class="mb-4">
+                            <div class="social-link">
+                                <div class="social-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label for="id_facebook" class="form-label">Facebook</label>
+                                    <input type="url" name="facebook" value="{{ form.facebook.value|default:'' }}" class="form-control" id="id_facebook" placeholder="https://facebook.com/username">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="social-link">
+                                <div class="social-icon">
+                                    <i class="fab fa-twitter"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label for="id_twitter" class="form-label">Twitter</label>
+                                    <input type="url" name="twitter" value="{{ form.twitter.value|default:'' }}" class="form-control" id="id_twitter" placeholder="https://twitter.com/username">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="social-link">
+                                <div class="social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label for="id_instagram" class="form-label">Instagram</label>
+                                    <input type="url" name="instagram" value="{{ form.instagram.value|default:'' }}" class="form-control" id="id_instagram" placeholder="https://instagram.com/username">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="fas fa-save me-2"></i>Lưu thông tin
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Kích hoạt tab từ URL hash nếu có
+    document.addEventListener('DOMContentLoaded', function() {
+        let hash = window.location.hash;
+        if (hash) {
+            let tabId = hash.replace('#', '');
+            let tabEl = document.querySelector(`button[data-bs-target="#${tabId}"]`);
+            if (tabEl) {
+                let tab = new bootstrap.Tab(tabEl);
+                tab.show();
+                
+                // Thêm hiệu ứng scroll đến tab
+                setTimeout(function() {
+                    tabEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }, 200);
+            }
+        }
+    });
+    
+    // Cập nhật URL hash khi tab thay đổi và thêm hiệu ứng
+    const tabs = document.querySelectorAll('button[data-bs-toggle="tab"]');
+    tabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', (e) => {
+            let targetId = e.target.getAttribute('data-bs-target').replace('#', '');
+            window.location.hash = targetId;
+            
+            // Thêm hiệu ứng nhấp nháy cho icon
+            const icon = e.target.querySelector('i');
+            if (icon) {
+                icon.classList.add('pulse-animation');
+                setTimeout(() => {
+                    icon.classList.remove('pulse-animation');
+                }, 1000);
+            }
+        });
+        
+        // Thêm hiệu ứng khi hover
+        tab.addEventListener('mouseenter', (e) => {
+            const icon = e.target.querySelector('i');
+            if (icon) {
+                icon.style.transform = 'scale(1.2)';
+            }
+        });
+        
+        tab.addEventListener('mouseleave', (e) => {
+            const icon = e.target.querySelector('i');
+            if (!e.target.classList.contains('active') && icon) {
+                icon.style.transform = 'scale(1)';
+            }
+        });
+    });
+    
+    // Thêm CSS cho hiệu ứng nhấp nháy
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.3); }
+            100% { transform: scale(1.2); }
+        }
+        
+        .pulse-animation {
+            animation: pulse-animation 1s ease;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %} 

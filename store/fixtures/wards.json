@@ -1,0 +1,695 @@
+[
+  {
+    "model": "store.ward",
+    "pk": 1,
+    "fields": {
+      "name": "Dịch Vọng",
+      "code": "dichvong",
+      "district": 1
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 2,
+    "fields": {
+      "name": "Dịch Vọng Hậu",
+      "code": "dichvonghau",
+      "district": 1
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 3,
+    "fields": {
+      "name": "Mai Dịch",
+      "code": "maidich",
+      "district": 1
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 4,
+    "fields": {
+      "name": "Nghĩa Đô",
+      "code": "nghiado",
+      "district": 1
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 5,
+    "fields": {
+      "name": "Phúc Xá",
+      "code": "phucxa",
+      "district": 2
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 6,
+    "fields": {
+      "name": "Trúc Bạch",
+      "code": "trucbach",
+      "district": 2
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 7,
+    "fields": {
+      "name": "Vĩnh Phúc",
+      "code": "vinhphuc",
+      "district": 2
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 8,
+    "fields": {
+      "name": "Cát Linh",
+      "code": "catlinh",
+      "district": 3
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 9,
+    "fields": {
+      "name": "Văn Miếu",
+      "code": "vanmieu",
+      "district": 3
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 10,
+    "fields": {
+      "name": "Quốc Tử Giám",
+      "code": "quoctugiam",
+      "district": 3
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 11,
+    "fields": {
+      "name": "Bến Nghé",
+      "code": "bennghe",
+      "district": 4
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 12,
+    "fields": {
+      "name": "Bến Thành",
+      "code": "benthanh",
+      "district": 4
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 13,
+    "fields": {
+      "name": "Cầu Kho",
+      "code": "caukho",
+      "district": 4
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 14,
+    "fields": {
+      "name": "Thảo Điền",
+      "code": "thaodien",
+      "district": 5
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 15,
+    "fields": {
+      "name": "An Phú",
+      "code": "anphu",
+      "district": 5
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 16,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1",
+      "district": 6
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 17,
+    "fields": {
+      "name": "Phường 2",
+      "code": "phuong2",
+      "district": 6
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 18,
+    "fields": {
+      "name": "Thanh Bình",
+      "code": "thanhbinh",
+      "district": 7
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 19,
+    "fields": {
+      "name": "Hải Châu I",
+      "code": "haichau1",
+      "district": 7
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 20,
+    "fields": {
+      "name": "Hòa Minh",
+      "code": "hoaminh",
+      "district": 8
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 21,
+    "fields": {
+      "name": "Hòa Khánh Nam",
+      "code": "hoakhanhnam",
+      "district": 8
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 22,
+    "fields": {
+      "name": "Quán Toan",
+      "code": "quantoan",
+      "district": 9
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 23,
+    "fields": {
+      "name": "Hùng Vương",
+      "code": "hungvuong",
+      "district": 9
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 24,
+    "fields": {
+      "name": "Lạch Tray",
+      "code": "lachtray",
+      "district": 10
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 25,
+    "fields": {
+      "name": "Đổng Quốc Bình",
+      "code": "dongquocbinh",
+      "district": 10
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 26,
+    "fields": {
+      "name": "Tân An",
+      "code": "tanan",
+      "district": 11
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 27,
+    "fields": {
+      "name": "An Khánh",
+      "code": "ankhanh",
+      "district": 11
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 28,
+    "fields": {
+      "name": "Phường Lê Bình",
+      "code": "lebinh",
+      "district": 12
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 29,
+    "fields": {
+      "name": "Phường Hưng Phú",
+      "code": "hungphu",
+      "district": 12
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 30,
+    "fields": {
+      "name": "Biên Giang",
+      "code": "biengiang",
+      "district": 13
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 31,
+    "fields": {
+      "name": "Đồng Mai",
+      "code": "dongmai",
+      "district": 13
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 32,
+    "fields": {
+      "name": "Phường Hàng Bạc",
+      "code": "hangbac",
+      "district": 14
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 33,
+    "fields": {
+      "name": "Phường Hàng Bồ",
+      "code": "hangbo",
+      "district": 14
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 34,
+    "fields": {
+      "name": "Hoàng Văn Thụ",
+      "code": "hoangvanthu",
+      "district": 15
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 35,
+    "fields": {
+      "name": "Giáp Bát",
+      "code": "giapbat",
+      "district": 15
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 36,
+    "fields": {
+      "name": "Ngọc Lâm",
+      "code": "ngoclam",
+      "district": 16
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 37,
+    "fields": {
+      "name": "Bồ Đề",
+      "code": "bode",
+      "district": 16
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 38,
+    "fields": {
+      "name": "Phường Quảng An",
+      "code": "quangan",
+      "district": 17
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 39,
+    "fields": {
+      "name": "Phường Nhật Tân",
+      "code": "nhattan",
+      "district": 17
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 40,
+    "fields": {
+      "name": "Phường Thanh Xuân Bắc",
+      "code": "thanhxuanbac",
+      "district": 18
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 41,
+    "fields": {
+      "name": "Phường Thanh Xuân Nam",
+      "code": "thanhxuannam",
+      "district": 18
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 42,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1_binhthanh",
+      "district": 19
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 43,
+    "fields": {
+      "name": "Phường 2",
+      "code": "phuong2_binhthanh",
+      "district": 19
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 44,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1_govap",
+      "district": 20
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 45,
+    "fields": {
+      "name": "Phường 3",
+      "code": "phuong3_govap",
+      "district": 20
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 46,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1_phunhuan",
+      "district": 21
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 47,
+    "fields": {
+      "name": "Phường 2",
+      "code": "phuong2_phunhuan",
+      "district": 21
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 48,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1_tanbinh",
+      "district": 22
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 49,
+    "fields": {
+      "name": "Phường 2",
+      "code": "phuong2_tanbinh",
+      "district": 22
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 50,
+    "fields": {
+      "name": "Phường Tân Thành",
+      "code": "tanthanh",
+      "district": 23
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 51,
+    "fields": {
+      "name": "Phường Tân Sơn Nhì",
+      "code": "tansonnhi",
+      "district": 23
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 52,
+    "fields": {
+      "name": "Phường Hòa Thọ Đông",
+      "code": "hoathodong",
+      "district": 24
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 53,
+    "fields": {
+      "name": "Phường Hòa Thọ Tây",
+      "code": "hoathotay",
+      "district": 24
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 54,
+    "fields": {
+      "name": "Phường Mỹ An",
+      "code": "myan",
+      "district": 25
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 55,
+    "fields": {
+      "name": "Phường Khuê Mỹ",
+      "code": "khuemy",
+      "district": 25
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 56,
+    "fields": {
+      "name": "Phường An Hải Bắc",
+      "code": "anhaibac",
+      "district": 26
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 57,
+    "fields": {
+      "name": "Phường An Hải Tây",
+      "code": "anhaitay",
+      "district": 26
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 58,
+    "fields": {
+      "name": "Phường Tân Chính",
+      "code": "tanchinh",
+      "district": 27
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 59,
+    "fields": {
+      "name": "Phường Thạc Gián",
+      "code": "thacgian",
+      "district": 27
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 60,
+    "fields": {
+      "name": "Phường Tân Mai",
+      "code": "tanmai",
+      "district": 28
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 61,
+    "fields": {
+      "name": "Phường Trung Dũng",
+      "code": "trungdung",
+      "district": 28
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 62,
+    "fields": {
+      "name": "Phường Xuân Thanh",
+      "code": "xuanthanh",
+      "district": 29
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 63,
+    "fields": {
+      "name": "Phường Phú Bình",
+      "code": "phubinh",
+      "district": 29
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 64,
+    "fields": {
+      "name": "Phường 1",
+      "code": "phuong1_vungtau",
+      "district": 30
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 65,
+    "fields": {
+      "name": "Phường 2",
+      "code": "phuong2_vungtau",
+      "district": 30
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 66,
+    "fields": {
+      "name": "Phường Long Hương",
+      "code": "longhuong",
+      "district": 31
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 67,
+    "fields": {
+      "name": "Phường Long Tâm",
+      "code": "longtam",
+      "district": 31
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 68,
+    "fields": {
+      "name": "Phường Lộc Thọ",
+      "code": "loctho",
+      "district": 32
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 69,
+    "fields": {
+      "name": "Phường Vĩnh Nguyên",
+      "code": "vinhnguyen",
+      "district": 32
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 70,
+    "fields": {
+      "name": "Phường Cam Nghĩa",
+      "code": "camnghia",
+      "district": 33
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 71,
+    "fields": {
+      "name": "Phường Cam Phúc Bắc",
+      "code": "camphucbac",
+      "district": 33
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 72,
+    "fields": {
+      "name": "Phường Đông Ba",
+      "code": "dongba",
+      "district": 34
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 73,
+    "fields": {
+      "name": "Phường Gia Hội",
+      "code": "giahoi",
+      "district": 34
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 74,
+    "fields": {
+      "name": "Phường Hiệp An",
+      "code": "hiepan",
+      "district": 35
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 75,
+    "fields": {
+      "name": "Phường Phú Cường",
+      "code": "phucuong",
+      "district": 35
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 76,
+    "fields": {
+      "name": "Phường An Bình",
+      "code": "anbinh",
+      "district": 36
+    }
+  },
+  {
+    "model": "store.ward",
+    "pk": 77,
+    "fields": {
+      "name": "Phường Bình An",
+      "code": "binhan",
+      "district": 36
+    }
+  }
+] 

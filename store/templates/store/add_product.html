@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Thêm sản phẩm mới</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label">Tên sản phẩm</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_description" class="form-label">Mô tả</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_price" class="form-label">Giá</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_discount_percent" class="form-label">Phần trăm giảm giá (%)</label>
+                            {{ form.discount_percent }}
+                            <div class="form-text">Nhập số từ 0 đến 100. Nếu không giảm giá, để là 0.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_category" class="form-label">Danh mục</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_image" class="form-label">Hình ảnh</label>
+                            {{ form.image }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                            <a href="{% url 'product_list' %}" class="btn btn-secondary">Quay lại</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

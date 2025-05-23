@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .cart-container {
+        max-width: 700px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .cart-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 10px;
+    }
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+    .item-info {
+        flex-grow: 1;
+    }
+    .item-name {
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .item-quantity {
+        font-size: 14px;
+        color: #666;
+    }
+    .item-price {
+        font-size: 16px;
+        font-weight: 600;
+        color: #28a745;
+        margin-right: 16px;
+    }
+    .remove-link {
+        color: #dc3545;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .remove-link:hover {
+        text-decoration: underline;
+    }
+    .cart-total {
+        margin-top: 24px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: right;
+    }
+    .checkout-btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        margin-top: 12px;
+        transition: background-color 0.3s;
+    }
+    .checkout-btn:hover {
+        background-color: #0056b3;
+    }
+    .empty-cart {
+        text-align: center;
+        padding: 40px;
+        font-size: 16px;
+        color: #666;
+    }
+</style>
+
+<div class="cart-container">
+    <h2 class="cart-title">🛒 Giỏ hàng</h2>
+
+    {% if items %}
+        {% for item in items %}
+            <div class="cart-item">
+                <div class="item-info">
+                    <div class="item-name">{{ item.product.name }}</div>
+                    <div class="item-quantity">Số lượng: {{ item.quantity }}</div>
+                </div>
+                <div class="item-price">{{ item.subtotal|floatformat:0 }} VNĐ</div>
+                <a class="remove-link" href="{% url 'remove_from_cart' item.id %}">Xoá</a>
+            </div>
+        {% endfor %}
+
+        <div class="cart-total">Tổng cộng: {{ total|floatformat:0 }} VNĐ</div>
+        <a href="{% url 'checkout' %}" class="checkout-btn">Thanh toán</a>
+    {% else %}
+        <div class="empty-cart">🛍 Giỏ hàng của bạn đang trống.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Form thiết lập giảm giá -->
+        <div class="col-md-5">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Thiết lập giảm giá hàng loạt</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.category.id_for_label }}" class="form-label">Danh mục sản phẩm</label>
+                            {{ form.category }}
+                            <div class="form-text">Nếu không chọn, sẽ áp dụng cho tất cả danh mục</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.discount_percent.id_for_label }}" class="form-label">Phần trăm giảm giá (%)</label>
+                            {{ form.discount_percent }}
+                            <div class="form-text">Nhập số từ 0-100. Nhập 0 để hủy giảm giá.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.min_price.id_for_label }}" class="form-label">Giá tối thiểu</label>
+                            {{ form.min_price }}
+                            <div class="form-text">Áp dụng cho sản phẩm có giá >= giá này</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.max_price.id_for_label }}" class="form-label">Giá tối đa</label>
+                            {{ form.max_price }}
+                            <div class="form-text">Áp dụng cho sản phẩm có giá <= giá này</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Áp dụng giảm giá</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Hướng dẫn nhanh -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Hướng dẫn</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Để giảm giá 20% cho tất cả sản phẩm: chọn "Phần trăm giảm giá" = 20, để trống các trường khác.</li>
+                        <li>Để giảm giá 15% cho một danh mục cụ thể: chọn danh mục và đặt "Phần trăm giảm giá" = 15.</li>
+                        <li>Để giảm giá 10% cho các sản phẩm có giá từ 1 triệu đến 5 triệu: đặt Giá tối thiểu = 1000000, Giá tối đa = 5000000, "Phần trăm giảm giá" = 10.</li>
+                        <li>Để hủy giảm giá cho tất cả sản phẩm: đặt "Phần trăm giảm giá" = 0, để trống các trường khác.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Danh sách sản phẩm đang giảm giá -->
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Sản phẩm đang giảm giá</h3>
+                </div>
+                <div class="card-body p-0">
+                    {% if discounted_products %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Danh mục</th>
+                                        <th>Giá gốc</th>
+                                        <th>Giảm giá</th>
+                                        <th>Giá sau giảm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in discounted_products %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                {% if product.image %}
+                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="me-2" style="width: 40px; height: 40px; object-fit: contain;">
+                                                {% endif %}
+                                                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                                            </div>
+                                        </td>
+                                        <td>{{ product.category.name }}</td>
+                                        <td>{{ product.price|floatformat:0|intcomma }} VNĐ</td>
+                                        <td><span class="badge bg-danger">-{{ product.discount_percent }}%</span></td>
+                                        <td>{{ product.discount_price|floatformat:0|intcomma }} VNĐ</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info m-3">
+                            Không có sản phẩm nào đang được giảm giá.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

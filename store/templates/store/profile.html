@@ -1,0 +1,688 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-header">
+        <div class="profile-cover"></div>
+        <div class="profile-avatar-container">
+            <div class="profile-avatar">
+                <img src="{% static 'images/default-avatar.jpg' %}" onerror="this.src='https://ui-avatars.com/api/?name={{ user.first_name }}+{{ user.last_name }}&background=3b82f6&color=fff&size=200'">
+                <div class="profile-avatar-edit">
+                    <i class="bi bi-camera-fill"></i>
+                </div>
+            </div>
+            <div class="profile-username">
+                <span>@{{ user.username }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-stats">
+        <div class="stat-item">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Đơn hàng</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Đánh giá</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ user.date_joined|date:'d/m/Y' }}</div>
+            <div class="stat-label">Ngày tham gia</div>
+        </div>
+    </div>
+
+    <div class="profile-tabs">
+        <button class="tab-btn active">
+            <i class="bi bi-person-lines-fill"></i>
+            Thông tin cá nhân
+        </button>
+        <button class="tab-btn">
+            <i class="bi bi-share"></i>
+            Liên kết mạng xã hội
+        </button>
+    </div>
+
+    <div class="profile-content">
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">
+                        <div class="message-icon">
+                            <i class="bi bi-info-circle-fill"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-title">Thông báo</div>
+                            <div class="message-text">{{ message }}</div>
+                        </div>
+                        <button class="message-close">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="profile-form-container">
+            <h2 class="form-title">
+                <i class="bi bi-pencil-square"></i>
+                Chỉnh sửa thông tin cá nhân
+            </h2>
+
+            <form method="post" class="profile-form">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_first_name">
+                            <i class="bi bi-person"></i>
+                            Họ
+                        </label>
+                        <div class="input-with-icon">
+                            {{ form.first_name }}
+                            <div class="input-icon-end">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_last_name">
+                            <i class="bi bi-person-add"></i>
+                            Tên
+                        </label>
+                        <div class="input-with-icon">
+                            {{ form.last_name }}
+                            <div class="input-icon-end">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="id_email">
+                            <i class="bi bi-envelope"></i>
+                            Email
+                        </label>
+                        <div class="input-with-icon">
+                            {{ form.email }}
+                            <div class="input-icon-end">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="bi bi-phone"></i>
+                            Số điện thoại
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="tel" placeholder="Nhập số điện thoại">
+                            <div class="input-icon-end">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="bi bi-calendar"></i>
+                            Ngày sinh
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="date" placeholder="dd/mm/yyyy">
+                            <div class="input-icon-end">
+                                <i class="bi bi-calendar-event"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>
+                            <i class="bi bi-geo-alt"></i>
+                            Địa chỉ
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="text" placeholder="Nhập địa chỉ của bạn">
+                            <div class="input-icon-end">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>
+                            <i class="bi bi-chat-quote"></i>
+                            Giới thiệu bản thân
+                        </label>
+                        <textarea placeholder="Hãy viết đôi điều về bản thân bạn..." rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Hủy thay đổi</button>
+                    <button type="submit" class="btn-update">
+                        <i class="bi bi-check2-circle"></i>
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+:root {
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-light: rgba(59, 130, 246, 0.1);
+    --secondary-color: #f43f5e;
+    --dark-text: #1e293b;
+    --light-text: #64748b;
+    --lighter-text: #94a3b8;
+    --border-color: #e2e8f0;
+    --background-light: #f8fafc;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+}
+
+.profile-page {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.profile-header {
+    position: relative;
+    height: 200px;
+}
+
+.profile-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, #4f46e5, #3b82f6, #0ea5e9);
+    overflow: hidden;
+}
+
+.profile-cover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0ibm9uZSIgLz48cGF0aCBkPSJNMCAwTDIwMCAyMDBNMjAwIDBMMCAyMDAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==');
+    opacity: 0.3;
+}
+
+.profile-avatar-container {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-avatar-edit {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    background-color: var(--primary-color);
+    border: 3px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    transition: all 0.2s;
+}
+
+.profile-avatar-edit:hover {
+    transform: scale(1.1);
+    background-color: var(--primary-hover);
+}
+
+.profile-username {
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-username span {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    margin-top: 90px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 30px;
+    position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 1px;
+    background-color: var(--border-color);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark-text);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--light-text);
+    margin-top: 4px;
+}
+
+.profile-tabs {
+    display: flex;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--light-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.tab-btn i {
+    font-size: 18px;
+}
+
+.tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px 3px 0 0;
+}
+
+.profile-content {
+    padding: 30px;
+}
+
+.messages-container {
+    margin-bottom: 30px;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid var(--success-color);
+}
+
+.message-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--error-color);
+}
+
+.message-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.message-success .message-icon {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+}
+
+.message-error .message-icon {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: var(--error-color);
+}
+
+.message-content {
+    flex: 1;
+}
+
+.message-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.message-success .message-title {
+    color: var(--success-color);
+}
+
+.message-error .message-title {
+    color: var(--error-color);
+}
+
+.message-text {
+    color: var(--light-text);
+    font-size: 14px;
+}
+
+.message-close {
+    background: none;
+    border: none;
+    color: var(--lighter-text);
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.message-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--dark-text);
+}
+
+.profile-form-container {
+    background-color: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.form-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-title i {
+    color: var(--primary-color);
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+label i {
+    color: var(--primary-color);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon input,
+.profile-form input,
+.profile-form textarea {
+    width: 100%;
+    padding: 14px 40px 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background-color: var(--background-light);
+    color: var(--dark-text);
+}
+
+.profile-form textarea {
+    resize: none;
+    padding: 14px 16px;
+}
+
+.input-with-icon input:focus,
+.profile-form input:focus,
+.profile-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background-color: white;
+}
+
+.input-icon-end {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--lighter-text);
+    pointer-events: none;
+    transition: all 0.2s;
+}
+
+.input-with-icon input:focus + .input-icon-end {
+    color: var(--primary-color);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    padding: 12px 20px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--light-text);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: var(--background-light);
+    color: var(--dark-text);
+}
+
+.btn-update {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-update:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn-update:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .profile-page {
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .profile-header {
+        height: 160px;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-stats {
+        margin-top: 70px;
+    }
+    
+    .stat-item {
+        padding: 0 15px;
+    }
+    
+    .profile-content {
+        padding: 20px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-group.full-width {
+        grid-column: auto;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel, .btn-update {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Xử lý nút đóng thông báo
+    const closeButtons = document.querySelectorAll('.message-close');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const message = this.closest('.message');
+            message.style.opacity = '0';
+            setTimeout(() => {
+                message.remove();
+            }, 300);
+        });
+    });
+});
+</script>
+{% endblock %} 
